@@ -1,8 +1,7 @@
 import styled from 'styled-components';
 
-import type { Product, Comments } from 'types';
-import CommentsView from './Components/CommentsView';
-import GoBack from './Components/GoBack';
+import type { Product } from 'types';
+import CommentsList from 'components/CommentsList';
 import ItemDetails from './Components/ItemDetails';
 
 const Wrapper = styled.div`
@@ -16,14 +15,12 @@ const Wrapper = styled.div`
 
 interface Props {
   product?: Product;
-  comments?: Comments;
 }
-const View = ({ product, comments }: Props) => {
+const View = ({ product }: Props) => {
   return (
     <Wrapper>
-      <GoBack />
       <ItemDetails product={product} />
-      <CommentsView comments={comments} />
+      <CommentsList />
     </Wrapper>
   );
 };

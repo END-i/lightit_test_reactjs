@@ -24,20 +24,32 @@ export interface Comment {
 }
 export type Comments = Comment[];
 
-export interface LoginRequest {
+export interface ChangedComment {
+  id: number;
+  username: string;
+  text: string;
+  created_at: string;
+  rate: number;
+}
+
+export interface AuthRequest {
   username: string;
   password: string;
 }
-export interface LoginResponse {
+export interface AuthResponse {
   success: boolean;
   token: string;
 }
 
-export interface RegistrationRequest {
-  username: string;
-  password: string;
-}
-export interface RegistrationResponse {
+export interface AddCommentResponse {
   success: boolean;
-  token: string;
+}
+
+export interface NewComment {
+  rate: number;
+  text: string;
+}
+
+export interface AddCommentPayload extends NewComment {
+  product_id: string;
 }

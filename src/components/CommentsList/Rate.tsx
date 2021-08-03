@@ -26,9 +26,9 @@ const Wrapper = styled.div`
 
 interface Props {
   changeRate: (rate: number) => void;
-  rating: number;
+  rate: number;
 }
-const Rate = ({ changeRate, rating }: Props) => {
+const Rate = ({ changeRate, rate }: Props) => {
   const [selection, setSelection] = useState(0);
 
   return (
@@ -38,7 +38,7 @@ const Rate = ({ changeRate, rating }: Props) => {
           return (
             <Star
               key={idx}
-              marked={rating > idx}
+              marked={rate > idx}
               selection={selection > idx}
               onClick={() => changeRate(idx + 1)}
               onMouseOver={() => setSelection(idx + 1)}
@@ -46,7 +46,7 @@ const Rate = ({ changeRate, rating }: Props) => {
             />
           );
         })}
-        <CountRate show={Boolean(rating)}>{`${rating} stars`}</CountRate>
+        <CountRate show={Boolean(rate)}>{`${rate} stars`}</CountRate>
       </Wrapper>
     </>
   );

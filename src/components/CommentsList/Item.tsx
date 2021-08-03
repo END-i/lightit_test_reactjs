@@ -10,18 +10,28 @@ const CommentWrapper = styled.div`
   display: flex;
   flex-direction: column;
 `;
-const UserName = styled.strong``;
-const Time = styled.i`
-  align-self: flex-end;
+const UserName = styled.strong`
+  &:first-letter {
+    text-transform: capitalize;
+  }
+`;
+const Info = styled.div`
+  display: flex;
+  border-top: 1px solid #888;
+  padding-top: 10px;
+`;
+const Time = styled.i``;
+const Rate = styled.span`
+  flex-grow: 1;
 `;
 
 interface Props {
   text: string;
   rate: number;
   created_at: any;
-  created_by: CreatedBy;
+  username: string;
 }
-const CommentItem = ({ text, rate, created_at, created_by: { username } }: Props) => {
+const CommentItem = ({ text, rate, created_at, username }: Props) => {
   const data = () => {
     const date = new Date(created_at);
 
@@ -41,7 +51,10 @@ const CommentItem = ({ text, rate, created_at, created_by: { username } }: Props
     <CommentWrapper>
       <UserName>{username}</UserName>
       <p>{text}</p>
-      <Time>{data()}</Time>
+      <Info>
+        <Rate>{`Rate: ${rate}`}</Rate>
+        <Time>{data()}</Time>
+      </Info>
     </CommentWrapper>
   );
 };

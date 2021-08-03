@@ -29,12 +29,12 @@ function useFetch<T>({ url, options, lazyFetch }: Props) {
 
     try {
       const response = await fetch(`${API_URL}${url}`, {
-        header: {
+        ...options,
+        headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
           Authorization: `Token ${token}`,
         },
-        ...options,
       });
       if (!response.ok) {
         throw new Error(`Status:${response.status}. ${response.statusText}`);

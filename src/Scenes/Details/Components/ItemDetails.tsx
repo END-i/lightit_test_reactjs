@@ -8,8 +8,16 @@ const Img = styled.img`
   max-width: 250px;
   width: 100%;
 `;
-const Title = styled.h2``;
-const Description = styled.p``;
+const Title = styled.h2`
+  &:first-letter {
+    text-transform: capitalize;
+  }
+`;
+const Description = styled.p`
+  &:first-letter {
+    text-transform: capitalize;
+  }
+`;
 
 interface Props {
   product?: Product;

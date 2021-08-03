@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
-import useFetch from 'hooks/useFetch';
+import useAxios from 'hooks/useAxios';
 import View from './view';
+import type { AuthRequest, AuthResponse } from 'types';
 
 interface Props {
   hideLogin: () => void;
@@ -9,18 +11,29 @@ interface Props {
 }
 const Login = ({ show, hideLogin }: Props) => {
   const [showLogin, setShowLogin] = useState(true);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<AuthRequest>({
     username: '',
     password: '',
   });
-  const { data, error, loading, fetchData } = useFetch<any>({
-    url: `api/${showLogin ? 'login' : 'register'}`,
-    options: {
-      method: 'post',
-      body: JSON.stringify(formData),
-    },
+  const {
+    data,
+    error,
+    loading,
+    fetchData: login,
+  } = useAxios<AuthResponse, AuthRequest>({
+    apiName: showLogin ? 'login' : 'register',
     lazyFetch: true,
+    payload: formData,
   });
+
+  useEffect(() => {
+    if (!data || !data?.success) return;
+
+    localStorage.setItem('token', data.token);
+    localStorage.setItem('username', formData.username);
+    axios.defaults.headers.common['Authorization'] = `Token ${data.token}`;
+    hideLogin();
+  }, [data]);
 
   const handleChange = (e: any) => {
     setFormData((prev) => ({
@@ -30,7 +43,7 @@ const Login = ({ show, hideLogin }: Props) => {
   };
 
   const onSubmit = () => {
-    fetchData();
+    login();
   };
 
   const reset = () => {

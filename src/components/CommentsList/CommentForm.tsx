@@ -1,13 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
-import useFetch from 'hooks/useFetch';
-import type { Comments } from 'types';
-import CommentItem from './CommentItem';
+import type { AddCommentPayload, AddCommentResponse, NewComment } from 'types';
 import Rate from './Rate';
+import useAxios from 'hooks/useAxios';
 
-const Wrapper = styled.div``;
 const TextAreaWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -33,11 +31,6 @@ const TextAreaWrapper = styled.div`
     border-radius: 2px;
   }
 `;
-const CommentsList = styled.div`
-  max-height: calc(100vh - 350px);
-  overflow: auto;
-  padding-right: 5px;
-`;
 const ErrorText = styled.span`
   color: #b51919;
   display: flex;
@@ -47,52 +40,49 @@ const ErrorText = styled.span`
 `;
 
 interface Props {
-  comments?: Comments;
+  updateComments: (rate: number, text: string) => void;
 }
-
-const CommentsView = ({ comments }: Props) => {
+const CommentForm = ({ updateComments }: Props) => {
   const params = useParams<{ product_id?: string }>();
   const product_id = params?.product_id || '';
   const [text, setText] = useState('');
-  const [rating, setRating] = useState(0);
-  const { data, loading, error, fetchData } = useFetch<any>({
-    url: `api/reviews/${product_id}`,
-    options: {
-      method: 'post',
-      body: JSON.stringify({
-        rate: rating,
-        text,
-      }),
-    },
+  const [rate, setRate] = useState<number>(0);
+  const { data, error, fetchData } = useAxios<AddCommentResponse, AddCommentPayload>({
+    apiName: 'addComment',
     lazyFetch: true,
+    payload: {
+      rate,
+      text,
+      product_id,
+    },
   });
 
-  const onChangeRate = (rate: number) => {
-    setRating(rate);
+  useEffect(() => {
+    if (!data?.success) return;
+
+    updateComments(rate, text);
+    setRate(0);
+    setText('');
+  }, [data]);
+  console.log('data :>> ', data, error);
+  const onChangeRate = (value: number) => {
+    setRate(value);
   };
 
   const onChangeText = (e: any) => {
     setText(e.target.value);
   };
 
-  if (!comments) {
-    return null;
-  }
   return (
-    <Wrapper>
-      <Rate changeRate={onChangeRate} rating={rating} />
+    <>
+      <Rate changeRate={onChangeRate} rate={rate} />
       <TextAreaWrapper>
         <textarea onChange={onChangeText} value={text} />
         <button onClick={fetchData}>Send comment</button>
         {error && <ErrorText>{error}</ErrorText>}
       </TextAreaWrapper>
-      <CommentsList>
-        {comments.map((comment) => {
-          return <CommentItem key={comment.id} {...comment} />;
-        })}
-      </CommentsList>
-    </Wrapper>
+    </>
   );
 };
 
-export default CommentsView;
+export default CommentForm;
