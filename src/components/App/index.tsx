@@ -1,9 +1,7 @@
 import styled from 'styled-components';
-import axios from 'axios';
 
 import Header from 'components/Header';
 import Routes from './Routes';
-import { useEffect } from 'react';
 
 const Wrapper = styled.div`
   max-width: 1200px;
@@ -16,13 +14,6 @@ const Wrapper = styled.div`
 `;
 
 const App = () => {
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      axios.defaults.headers.common['Authorization'] = `Token ${token}`;
-    }
-  }, []);
-
   return (
     <Wrapper>
       <Header />

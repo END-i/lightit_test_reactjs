@@ -4,13 +4,16 @@ import axios from 'axios';
 import useAxios from 'hooks/useAxios';
 import View from './view';
 import type { AuthRequest, AuthResponse } from 'types';
+import { ActionTypes, useDispatch } from 'context';
 
 interface Props {
   hideLogin: () => void;
   show: boolean;
 }
 const Login = ({ show, hideLogin }: Props) => {
+  const dispatch = useDispatch();
   const [showLogin, setShowLogin] = useState(true);
+  const [responseError, setResponseError] = useState('');
   const [formData, setFormData] = useState<AuthRequest>({
     username: '',
     password: '',
@@ -27,11 +30,14 @@ const Login = ({ show, hideLogin }: Props) => {
   });
 
   useEffect(() => {
-    if (!data || !data?.success) return;
+    if (!data) return;
+    if (data?.message) {
+      setResponseError(data?.message);
+      return;
+    }
 
-    localStorage.setItem('token', data.token);
-    localStorage.setItem('username', formData.username);
-    axios.defaults.headers.common['Authorization'] = `Token ${data.token}`;
+    dispatch({ type: ActionTypes.setToken, payload: data.token });
+    dispatch({ type: ActionTypes.setToken, payload: formData.username });
     hideLogin();
   }, [data]);
 
@@ -65,7 +71,7 @@ const Login = ({ show, hideLogin }: Props) => {
       handleChange={handleChange}
       formData={formData}
       onSubmit={onSubmit}
-      error={error}
+      error={error || responseError}
     />
   );
 };

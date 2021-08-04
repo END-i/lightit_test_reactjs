@@ -7,7 +7,7 @@ import Item from './Item';
 const Wrapper = styled.div``;
 
 const CommentsList = styled.div`
-  max-height: calc(100vh - 350px);
+  max-height: calc(100vh - 400px);
   overflow: auto;
   padding-right: 5px;
 `;

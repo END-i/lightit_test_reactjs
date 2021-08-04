@@ -3,6 +3,7 @@ import { useHistory, Link } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
 
+import { ActionTypes, useDispatch, useStore } from 'context';
 import Login from 'components/Login';
 
 const Wrapper = styled.div`
@@ -39,22 +40,18 @@ const Scenes = styled.div`
 `;
 
 const Header = () => {
+  const dispatch = useDispatch();
+  const { token } = useStore();
   const [show, setShow] = useState(false);
-  const token = localStorage.getItem('token');
-  const { push } = useHistory();
 
   const handleClick = () => {
     if (token) {
-      localStorage.removeItem('token');
-      localStorage.removeItem('username');
-      push('/home');
-      delete axios.defaults.headers.common['Authorization'];
-      return;
+      dispatch({ type: ActionTypes.logout });
+    } else {
+      setShow(true);
     }
-
-    setShow(true);
   };
-
+  console.log('token :>> ', token);
   const hideLogin = () => setShow(false);
 
   return (

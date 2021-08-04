@@ -6,13 +6,16 @@ import { Router as BrowserRouter } from 'react-router';
 import reportWebVitals from './reportWebVitals';
 import App from './components/App';
 import 'index.css';
+import { Provider } from 'context';
 
 const history = createBrowserHistory();
 
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter history={history}>
-      <App />
+      <Provider>
+        <App />
+      </Provider>
     </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root'),

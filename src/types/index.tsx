@@ -39,6 +39,7 @@ export interface AuthRequest {
 export interface AuthResponse {
   success: boolean;
   token: string;
+  message?: string;
 }
 
 export interface AddCommentResponse {
