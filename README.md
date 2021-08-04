@@ -6,41 +6,154 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 In the project directory, you can run:
 
-### `yarn start`
+### `yarn && yarn start`
 
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+#
 
-### `yarn test`
+# Тестовое задание (React JS разработчик)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Тестовое задание для React JS разработчика имеет основное задание и 2 дополнительных задания. Это необходимо для более гибкого понимания уровня знаний и опыта кандидата. Дополнительные задания не являются обязательными к выполнению. Задание должно выполняться так: обязательная основная часть и по мере достижения ожидаемого результата 1й дополнительный сценарий и после его реализации 2й дополнительный сценарий.
 
-### `yarn build`
+В рамках тестового задания необходимо спроектировать и реализовать мобильное приложение реализующее функционал простейшего каталога продуктов.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Обязательные функции:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- Авторизация.
+- Просмотр списка продуктов.
+- Оставление комментариев.
+- Голосование за продукт.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+В приложении должна присутствовать возможность зарегистрироваться и войти в каталог для пользователя. Предусмотреть возможность просмотра продуктов для незарегистрированного пользователя.
 
-### `yarn eject`
+После входа должен отобразиться список продуктов.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+При выборе продукта отобразить следующую информацию: наименование, изображение, развернутое описание и список отзывов. Список отзывов должен отображать текст отзыва и оценку по пятибалльной шкале.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Также должна присутствовать возможность оставить отзыв с оценкой для товара. Возможность оставлять отзыв должна присутствовать только для зарегистрированного пользователя.
+В качестве бекенда для разработки можно использовать REST API описанный ниже.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+# Описание REST API, которое можно использовать в разработке.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+URL сервиса: http://smktesting.herokuapp.com/
 
-## Learn More
+URL для отображения картинок: http://smktesting.herokuapp.com/static/
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+На сервере хранится список продуктов и список отзывов к ним с оценками.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Модель продукта имеет следующий вид:
+
+- Id — идентификатор продукта
+- Title — наименование продукта
+- Image — изображение продукта
+- Text — описание продукта
+
+Каждый товар может иметь отзывы. Модель отзыва определена следующим образом:
+
+- Id — идентификатор отзыва
+- Rate — оценка
+- Text — комментарий
+- Id_user — идентификатор пользователя
+- Id_entry — идентификатор продукта
+
+Модель пользователя:
+
+- Id — идентификатор пользователя
+- Username — имя пользователя.
+- Password — пароль. Описание API запросов
+
+Для выполнения запросов к api нужно передавать полученный токен доступа в заголовке http-запроса: `Authorization: Token <token>`
+
+POST /api/register/ — зарегестрировать пользователя. Пример запроса:
+
+    {
+      "username": <username>,
+      "password": <password>
+    }
+
+Пример ответа:
+
+    {
+      "success": true,
+      "token": <token>
+    }
+
+POST /api/login/ — получение токена для авторизации. Пример запроса:
+
+    {
+      "username": <username>,
+      "password": <password>
+    }
+
+Пример ответа:
+
+    {
+      "success": true, "token": <token>
+    }
+
+GET /api/products/ — возвращает список продуктов. Пример ответа:
+
+    [
+      {
+        "id": 1,
+        "img": "img1.png",
+        "text": "Lorem ipsum dolor sit amet.",
+        "title": "product 1
+      },
+    ... ]
+
+POST /api/reviews/<product_id>/ - постить отзыв о продукте с идентификатором . Пример запроса:
+
+    {
+      "rate": 5,
+      "text": "Lorem"
+    }
+
+Пример ответа:
+
+    {
+      "review_id": 5
+    }
+
+GET /api/reviews/<product_id>/ - возвращает список отзывов для продукта с идентификатором . Пример ответа:
+
+    [
+      {
+        "id": 10,
+        "product": 1,
+        "created_by":
+          {
+            "id": 1,
+            "username": "user"
+          },
+        "rate": 0,
+        "text": "ipsum"
+      },
+    ... ]
+
+Дополнительное задание
+Для кандидатов претендующих на более высокий уровень:
+1)Добавить возможность создания и редактирования профайла пользователя в случае если был пройден процесс регистрации. Пользователь может добавить свое имя, фамилию, аватарку. Данные должны хранится локально на девайсе. Профайл пользователь должен заполнить после регистрации и иметь в последующем возможность его отредактировать. Когда пользователь выходит из своего аккаунта эти данные должны очищаться. 2) Добавить возможность сохранения товара, по желанию пользователя, на девайс. В случае отсутствия интернета уведомить пользователя об этом и предоставить ему доступ к товарам в “оффлайн” режиме. Это условие должно работать только в случае если пользователь прошел процесс регистрации.
+
+# Требования к оформлению и критерии оценки
+
+При разработке пользовательского интерфейса нет никаких определенных требований к внешнему виду приложения, однако функциональные и удобные в использовании варианты интерфейса будут оценены существенно выше. Фактически будет проверена способность разработчика разрабатывать UI/UX, опираясь на общепринятые представления.
+
+Приложение должно быть рабочим. Если присланный код не работает, или его не удаётся запустить из-за отсутсвия необходимых инструкций - тестовое задание не рассматривается.
+
+Обязательным условием является использование систем контроля версии. Проверяться будут только те тестовые задания исходный код которых в репозитории (например github или bitbucket).
+
+Код должен соответсвовать общепринятым стилевым и организационным стандартам действующим для выбранных вами языков и технологий.
+
+По возможности код должен сопровождаться разумными комментариями, юнит-тестами, прочими инструкциями.
+
+Оцениваться тестовое задание будет по следующим критериям:
+
+- Заполнотувыполненияиработоспособность-максимум5балов;
+- За качество кода разметки, соответсвие общепринятым стандартам и т.п. - максимум 3 бала; - За качество js кода и проектирование - максимум 3 бала;
+- За внешний вид и креативность - 1 бала.
+- За каждое дополнительное задание по 1 баллу
+
+Для прохождения отбора соискатель должен набрать 8 балов.
