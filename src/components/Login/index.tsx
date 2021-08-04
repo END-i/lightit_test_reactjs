@@ -37,7 +37,7 @@ const Login = ({ show, hideLogin }: Props) => {
     }
 
     dispatch({ type: ActionTypes.setToken, payload: data.token });
-    dispatch({ type: ActionTypes.setToken, payload: formData.username });
+    dispatch({ type: ActionTypes.setUserName, payload: formData.username });
     hideLogin();
   }, [data]);
 
