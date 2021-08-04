@@ -64,7 +64,7 @@ const CommentForm = ({ updateComments }: Props) => {
     setRate(0);
     setText('');
   }, [data]);
-  console.log('data :>> ', data, error);
+
   const onChangeRate = (value: number) => {
     setRate(value);
   };

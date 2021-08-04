@@ -51,7 +51,6 @@ const Header = () => {
       setShow(true);
     }
   };
-  console.log('token :>> ', token);
   const hideLogin = () => setShow(false);
 
   return (

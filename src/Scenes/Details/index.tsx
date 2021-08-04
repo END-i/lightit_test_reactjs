@@ -1,4 +1,4 @@
-import { memo, useEffect, useMemo } from 'react';
+import { memo, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 
 import useAxios from 'hooks/useAxios';
@@ -11,10 +11,6 @@ const Product = () => {
   const products = useAxios<Products>({ apiName: 'getProducts' });
 
   const product = useMemo(() => (products.data || []).find(({ id }) => id === Number(product_id)), [products]);
-
-  useEffect(() => {
-    console.log('Product MOUNT');
-  }, []);
 
   return <View product={product} />;
 };
