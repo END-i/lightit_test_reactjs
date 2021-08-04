@@ -21,7 +21,7 @@ const CommentsView = ({ comments, updateComments }: Props) => {
     <Wrapper>
       <CommentForm updateComments={updateComments} />
       <CommentsList>
-        {comments.map((comment) => {
+        {comments.reverse().map((comment) => {
           return <Item key={comment.id} {...comment} />;
         })}
       </CommentsList>

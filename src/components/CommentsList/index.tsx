@@ -13,7 +13,7 @@ const CommentsList = () => {
     payload: product_id,
   });
   const [comments, updateComments] = useReducer(
-    (state: ChangedComment[], action: ChangedComment[]) => [...state, ...action],
+    (state: ChangedComment[], action: ChangedComment[]) => [...action, ...state],
     [],
   );
 
@@ -21,8 +21,8 @@ const CommentsList = () => {
     if (!data) return;
 
     updateComments(
-      data.map(({ text, rate, created_by, created_at }) => ({
-        id: new Date().getTime(),
+      data.map(({ id, text, rate, created_by, created_at }) => ({
+        id: new Date().getTime() + id,
         username: created_by.username,
         text,
         created_at,
