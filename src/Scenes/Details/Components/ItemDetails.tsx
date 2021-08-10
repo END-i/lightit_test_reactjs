@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { API_URL } from 'hooks/useFetch';
+import { IMG_BASE_URL } from 'services/api';
 import { Product } from 'types';
 
 const Wrapper = styled.div``;
@@ -30,7 +30,7 @@ const ItemDetails = ({ product }: Props) => {
   const { img, title, text } = product;
   return (
     <Wrapper>
-      <Img src={`${API_URL}static/${img}`} alt="product-image" />
+      <Img src={`${IMG_BASE_URL}${img}`} alt="product-image" />
       <Title>{title}</Title>
       <Description>{text}</Description>
       <Description>

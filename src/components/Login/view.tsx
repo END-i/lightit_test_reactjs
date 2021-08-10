@@ -10,7 +10,7 @@ const Wrapper = styled.div`
   align-items: center;
   justify-content: center;
 `;
-const Dialog = styled.div`
+const Dialog = styled.form`
   background: #fff;
   min-width: 300px;
   padding: 20px 10px;
@@ -69,7 +69,7 @@ interface Props {
     password: string;
   };
   handleChange: (e: any) => void;
-  onSubmit: () => void;
+  onSubmit: (e: any) => void;
   error: string;
   hideLogin: () => void;
   show: boolean;
@@ -78,7 +78,7 @@ const View = ({ onShowLogin, showLogin, formData, handleChange, onSubmit, error,
   return (
     <Wrapper>
       <Overlay show={show} onClick={hideLogin} />
-      <Dialog>
+      <Dialog onSubmit={onSubmit}>
         <Title>{showLogin ? 'Login' : 'Registration'}</Title>
         <Input placeholder="User name" type="text" value={formData.username} onChange={handleChange} name="username" />
         <Input
@@ -88,7 +88,7 @@ const View = ({ onShowLogin, showLogin, formData, handleChange, onSubmit, error,
           onChange={handleChange}
           name="password"
         />
-        <SubmitButton onClick={onSubmit}>{showLogin ? 'Sign In' : 'Send'}</SubmitButton>
+        <SubmitButton type="submit">{showLogin ? 'Sign In' : 'Send'}</SubmitButton>
         {error && <ErrorText>{error}</ErrorText>}
         <SwitchForm onClick={onShowLogin}>{showLogin ? 'Registration' : 'Login'}</SwitchForm>
       </Dialog>

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import services from './api';
+import services from 'services/api';
 
 interface Props<C> {
   apiName: string;
@@ -25,10 +25,10 @@ function useAxios<T, C = string>({ apiName, lazyFetch, payload }: Props<C>) {
 
     try {
       const request = services[apiName];
+
       if (!request) throw new Error('Error! Api not found');
 
       const { status, statusText, ...rest } = await request(payload);
-
       if (status < 200 && status > 300) throw new Error(`Status: ${status}. ${statusText}`);
 
       setData(rest.data);

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 import type { Products } from 'types';
-import { IMG_BASE_URL } from 'hooks/api';
+import { IMG_BASE_URL } from 'services/api';
 
 const WrapperList = styled.div`
   display: grid;

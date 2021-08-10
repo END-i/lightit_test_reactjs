@@ -54,3 +54,23 @@ export interface NewComment {
 export interface AddCommentPayload extends NewComment {
   product_id: string;
 }
+
+export type Favorites = {
+  product: Product;
+  comments: ChangedComment;
+}[];
+
+export interface IProfile {
+  firstName: string;
+  lastName: string;
+  photo: string;
+}
+
+type NotificationTypes = 'Error' | 'Success' | 'Info';
+export interface Notification {
+  type: NotificationTypes;
+  title: string;
+  text?: string;
+}
+
+export type INotifications = Notification[];

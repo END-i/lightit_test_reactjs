@@ -48,7 +48,8 @@ const Login = ({ show, hideLogin }: Props) => {
     }));
   };
 
-  const onSubmit = () => {
+  const onSubmit = (e: any) => {
+    e.preventDefault();
     login();
   };
 

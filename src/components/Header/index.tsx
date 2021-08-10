@@ -1,7 +1,6 @@
 import { useState } from 'react';
-import { useHistory, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import axios from 'axios';
 
 import { ActionTypes, useDispatch, useStore } from 'context';
 import Login from 'components/Login';
@@ -38,7 +37,18 @@ const Scenes = styled.div`
     text-decoration: none;
   }
 `;
+const DisabledLink = styled.a`
+  && {
+    color: #888;
+  }
+`;
 
+const paths = [
+  { path: '/products', title: 'Products' },
+  { path: '/profile', title: 'Profile', isAuth: true },
+  // { path: '/favorite', title: 'Favorite', isAuth: true },
+  { path: '/about', title: 'About' },
+];
 const Header = () => {
   const dispatch = useDispatch();
   const { token } = useStore();
@@ -58,8 +68,17 @@ const Header = () => {
       <Wrapper>
         <Logo>LOGO</Logo>
         <Scenes>
-          <Link to="/products">Products</Link>
-          <Link to="/about">About</Link>
+          {paths.map(({ path, isAuth, title }) => {
+            const link = !isAuth || (isAuth && token) ? path : '';
+            if (link) {
+              return (
+                <Link key={path} to={link}>
+                  {title}
+                </Link>
+              );
+            }
+            return <DisabledLink key={path}>{title}</DisabledLink>;
+          })}
         </Scenes>
         {localStorage.getItem('username') && <UserName>{localStorage.getItem('username')}</UserName>}
         <Button onClick={handleClick}>{token ? 'Sign Out' : 'Sign In'}</Button>
